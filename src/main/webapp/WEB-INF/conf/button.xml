@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buttons>
+	<button>
+		<name>关于国贸</name>
+		<sub_button>
+			<button>
+				<type>view</type>
+				<name>国贸概况</name>
+				<url>http://59.57.246.46/WeixinService/getSummary.html#mp.weixin.qq.com</url>
+			</button>
+			<button>
+				<type>view</type>
+				<name>经营业务</name>
+				<url>http://59.57.246.46/WeixinService/business.html#mp.weixin.qq.com</url>
+			</button>
+			<button>
+				<type>view</type>
+				<name>国贸新闻</name>
+				<url>http://59.57.246.46/WeixinService/getNews.html#mp.weixin.qq.com</url>
+			</button>
+			<button>
+				<type>view</type>
+				<name>国贸股价</name>
+				<url>http://59.57.246.46/WeixinService/getStock.html#mp.weixin.qq.com</url>
+			</button>
+		</sub_button>
+	</button>
+	<button>
+		<type>click</type>
+		<name>主题口号</name>
+		<key>itg35</key>
+	</button>
+	<button>
+		<name>链    接</name>
+		<sub_button>
+			<button>
+				<type>click</type>
+				<name>员工专区</name>
+				<key>employee</key>
+			</button>
+			<button>
+				<type>view</type>
+				<name>微信链接</name>
+				<url>http://59.57.246.46/WeixinService/getLinks.html</url>
+			</button>
+			
+		</sub_button>
+	</button>
+	
+</buttons>

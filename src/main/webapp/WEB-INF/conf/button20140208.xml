@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buttons>
+	<button>
+		<type>click</type>
+		<name>国贸概况</name>
+		<key>summary</key>
+	</button>
+	<button>
+		<type>click</type>
+		<name>员工专区</name>
+		<key>employee</key>
+	</button>
+	<button>
+		<type>view</type>
+		<name>微信链接</name>
+		<url>http://59.57.246.46/WeixinService/getLinks.html</url>
+	</button>
+</buttons>

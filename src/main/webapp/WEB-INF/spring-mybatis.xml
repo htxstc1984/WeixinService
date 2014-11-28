@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/tx  http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/data/mongo    
+    http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd    
+	">
+
+	<!-- 配置数据源 -->
+	<bean id="cmsDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass">
+			<value>net.sourceforge.jtds.jdbc.Driver</value>
+		</property>
+		<property name="jdbcUrl">
+			<value>jdbc:jtds:sqlserver://172.16.10.237:1433/itggroupcmsnew
+			</value>
+		</property>
+		<property name="user">
+			<value>itggroupcms</value>
+		</property>
+		<property name="password">
+			<value>itggr0upcns</value>
+		</property>
+		<property name="initialPoolSize">
+			<value>100</value>
+		</property>
+		<property name="minPoolSize">
+			<value>100</value>
+		</property>
+		<property name="maxPoolSize">
+			<value>200</value>
+		</property>
+		<property name="acquireIncrement">
+			<value>10</value>
+		</property>
+		<property name="maxIdleTime">
+			<value>10</value>
+		</property>
+		<property name="maxStatements">
+			<value>0</value>
+		</property>
+	</bean>
+
+	<bean id="weixinDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass">
+			<value>net.sourceforge.jtds.jdbc.Driver</value>
+		</property>
+		<property name="jdbcUrl">
+			<value>jdbc:jtds:sqlserver://172.16.10.237:1433/itgweixin</value>
+		</property>
+		<property name="user">
+			<value>itgweixindbo</value>
+		</property>
+		<property name="password">
+			<value>Db0itgweixin</value>
+		</property>
+		<property name="initialPoolSize">
+			<value>100</value>
+		</property>
+		<property name="minPoolSize">
+			<value>100</value>
+		</property>
+		<property name="maxPoolSize">
+			<value>200</value>
+		</property>
+		<property name="acquireIncrement">
+			<value>20</value>
+		</property>
+		<property name="maxIdleTime">
+			<value>10</value>
+		</property>
+		<property name="maxStatements">
+			<value>0</value>
+		</property>
+	</bean>
+
+	<bean id="mmsDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass">
+			<value>com.mysql.jdbc.Driver</value>
+		</property>
+		<property name="jdbcUrl">
+			<value>jdbc:MySql://59.57.246.61:3306/mas?&amp;dbcharset=gb2312&amp;characterEncoding=gb2312</value>
+		</property>
+		<property name="user">
+			<value>OATEST</value>
+		</property>
+		<property name="password">
+			<value>123456789</value>
+		</property>
+		<property name="initialPoolSize">
+			<value>20</value>
+		</property>
+		<property name="minPoolSize">
+			<value>20</value>
+		</property>
+		<property name="maxPoolSize">
+			<value>50</value>
+		</property>
+		<property name="acquireIncrement">
+			<value>5</value>
+		</property>
+		<property name="maxIdleTime">
+			<value>10</value>
+		</property>
+		<property name="maxStatements">
+			<value>0</value>
+		</property>
+	</bean>
+
+	<mongo:mongo host="172.16.10.170" port="27017">
+		<mongo:options connections-per-host="200"
+			threads-allowed-to-block-for-connection-multiplier="100"
+			connect-timeout="1000" max-wait-time="1500" auto-connect-retry="true"
+			socket-keep-alive="true" socket-timeout="1500" slave-ok="true"
+			write-number="1" write-timeout="0" write-fsync="true" />
+	</mongo:mongo>
+
+	<mongo:db-factory dbname="weixin" mongo-ref="mongo" />
+
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+	</bean>
+
+	<bean id="abstractMongoDB" class="com.***.AbstractMongoDB"
+		abstract="true">
+		<property name="mongoTemplate">
+			<ref bean="mongoTemplate" />
+		</property>
+	</bean>
+
+	<!-- myBatis文件 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="weixinDataSource" />
+		<property name="mapperLocations" value="classpath:com/itg/weixin/data/*Mapper.xml" />
+	</bean>
+
+	<!-- <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"> 
+		<constructor-arg index="0" ref="sqlSessionFactory" /> </bean> <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"> 
+		<property name="basePackage" value="com.itg.weixin.service" /> <property 
+		name="sqlSessionTemplate" ref="sqlSession" /> </bean> -->
+
+	<bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.itg.weixin.data.UserEntityMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+
+</beans>
